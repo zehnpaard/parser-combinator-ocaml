@@ -38,6 +38,11 @@ let orElse p1 p2 =
 ;;
 
 let ( <|> ) = orElse;;
+
+let choice ps = List.fold_left orElse (List.hd ps) (List.tl ps);;
+
+let anyOf cs = choice (List.map p cs);;
+
 let explode s = List.init (String.length s) (String.get s);;
 
 let parse c s = run (p c) (explode s);;
