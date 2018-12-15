@@ -27,8 +27,17 @@ let andThen p1 p2 =
   Parser f
 ;;
 
-let ( @>> ) = andThen;;
+let ( >> ) = andThen;;
 
+let orElse p1 p2 =
+  let f cs = match run p1 cs with
+    | Success _ as r -> r
+    | Failure _ -> run p2 cs
+  in
+  Parser f
+;;
+
+let ( <|> ) = orElse;;
 let explode s = List.init (String.length s) (String.get s);;
 
 let parse c s = run (p c) (explode s);;
